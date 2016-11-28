@@ -1,0 +1,115 @@
+---
+title: "The success of iteration and teamwork as strategies for winning Kaggle competitions"
+author: "Pierce Edmiston"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_depth: 1
+---
+
+Kaggle competitions are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. Teams can use any number of methods to generate the predictions. Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of two possible strategies to completing Kaggle competitions: **iteration** and **team size**. Iteration as a strategy in a Kaggle competition is making multiple submissions with the goal of incrementally improving performance each time. Do teams that make more submissions have a better chance of winning? The second strategy is the effect of team size. How much do additional teammates improve a team's chance of success?
+
+```{r config, echo = FALSE}
+library(knitr)
+library(broom)
+library(printr)
+library(grid)
+
+opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  dev = c("svg", "png"),
+  fig.path = "figs/",
+  fig.height = 3.5,
+  fig.width = 4,
+  cache = TRUE,
+  cache.path = ".cache/"
+)
+
+read_chunk("R/setup.R")
+read_chunk("R/theme.R")
+read_chunk("R/submissions.R")
+read_chunk("R/submission-interval.R")
+read_chunk("R/team-types.R")
+read_chunk("R/team-size.R")
+```
+
+```{r setup}
+```
+
+```{r theme}
+```
+
+# What is Kaggle?
+
+[Kaggle competitions](https://kaggle.com) are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. For example, a standard Kaggle competition is to predict the survivors of the Titanic. Given a passenger's ticket information, how accurately can teams predict whether or not the passenger survived? This example is a bit more morbid than usual, but otherwise it's illustrative of the fact that perfect performance is rarely possible in a Kaggle competition. It's likely impossible to predict exactly who survived the Titanic based only on ticket information, but people can do far better than chance. The way teams improve their predictions is by using statistics and machine learning to generate more and more accurate predictions. Teams can use any method in statistics and machine learning to generate the predictions, which means there are many possible solutions to any Kaggle competition. The goal of this report is to determine whether iteration and team size are successful strategies to approaching Kaggle competitions regardless of what specific method is being used.
+
+# Iteration
+
+```{r submissions-per-place, results = 'hide', fig.show = 'hide'}
+```
+
+```{r relative-submissions-per-place, results = 'hide', fig.show = 'hide'}
+```
+
+```{r place-from-submissions-mod, results = 'hide', fig.show = 'hide'}
+```
+
+```{r place-from-submissions, results = 'hide', fig.show = 'hide'}
+```
+
+```{r predicted-place-from-submission, results = 'hide', fig.show = 'hide'}
+```
+
+```{r iteration, fig.width = 8, fig.height = 6}
+remove_titles <- theme(plot.title = element_blank())
+multiplot <- function(gg) gg + remove_titles
+
+grid.arrange(
+  multiplot(gg_submissions_per_place),
+  multiplot(gg_relative_submissions_per_place),
+  multiplot(gg_place_from_submissions),
+  multiplot(gg_predicted_place_from_submissions)
+)
+```
+
+# Submission interval
+
+```{r submission-interval-per-place}
+```
+
+```{r prop-time-per-place}
+```
+
+# Team types
+
+```{r team-types-quartet, fig.width = 6, fig.height = 5.25}
+```
+
+```{r team-types-density}
+```
+
+```{r team-types-place}
+```
+
+```{r top-100-submissions-by-time}
+```
+
+# Team size
+
+```{r teamsize-from-place}
+```
+
+```{r place-from-teamsize}
+```
+
+```{r place-from-teamsize-zoom}
+```
+
+```{r team-size-submissions-correlation}
+```
+
+```{r submissions-by-team-size-per-place}
+```

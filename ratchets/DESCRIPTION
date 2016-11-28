@@ -1,0 +1,22 @@
+Package: ratchets
+Title: Iteration As A Strategy
+Version: 0.0.0.9000
+Authors@R: person("Pierce", "Edmiston", email = "pierce.edmiston@gmail.com", role = c("aut", "cre"))
+Description:
+    This R package contains the data used to test hypotheses about
+    the role of iteration as a strategy in problem solving competitions.
+    The primary source of data for the analysis is meta data on
+    Kaggle competitions. This research project asks the question,
+    How effective is iteration as a problem solving strategy, the
+    goal of which is to submit multiple solutions with the goal of
+    improving solution success each time, as compared to other
+    predictors of team success, such as length of time spent on the
+    problem and number of teammates contributing to the solution?
+Depends:
+    R (>= 3.3.1)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Suggests:
+    testthat
+RoxygenNote: 5.0.1

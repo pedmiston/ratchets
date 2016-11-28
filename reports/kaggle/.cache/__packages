@@ -1,0 +1,15 @@
+base
+knitr
+broom
+printr
+dplyr
+magrittr
+tidyr
+lubridate
+ggplot2
+gridExtra
+scales
+Matrix
+lme4
+AICcmodavg
+evoteams
