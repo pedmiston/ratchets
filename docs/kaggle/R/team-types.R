@@ -1,5 +1,5 @@
-source("reports/kaggle/R/setup.R")
-source("reports/kaggle/R/theme.R")
+source("docs/kaggle/R/setup.R")
+source("docs/kaggle/R/theme.R")
 
 # ---- team-types-quartet
 submission_rates <- list(

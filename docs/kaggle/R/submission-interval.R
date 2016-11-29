@@ -1,5 +1,5 @@
-source("reports/kaggle/R/setup.R")
-source("reports/kaggle/R/theme.R")
+source("docs/kaggle/R/setup.R")
+source("docs/kaggle/R/theme.R")
 
 # ---- submission-interval-per-place
 ggplot(top_100_places, aes(Place, TotalTime)) +
