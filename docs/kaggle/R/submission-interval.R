@@ -2,7 +2,7 @@ source("docs/kaggle/R/setup.R")
 source("docs/kaggle/R/theme.R")
 
 # ---- submission-interval-per-place
-ggplot(top_100_places, aes(Place, TotalTime)) +
+gg_submission_interval_per_place <- ggplot(top_100_places, aes(Place, TotalTime)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
   make_time_scale("submission interval (days)", breaks_days = seq(0, 30, by = 5)) +
@@ -10,15 +10,17 @@ ggplot(top_100_places, aes(Place, TotalTime)) +
   coord_cartesian(xlim = top_100_places_xlim, ylim = c(0, 30 * 24 * 3600)) +
   base_theme +
   labs(title = "Consistent submission intervals across places")
+gg_submission_interval_per_place
 
 # ---- prop-time-per-place
-ggplot(top_100_places, aes(Place, PropCompetitionTime)) +
+gg_prop_time_per_place <- ggplot(top_100_places, aes(Place, PropCompetitionTime)) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
   scale_y_continuous("proportion time used", labels = percent) +
   scale_color_manual(values = c(colors[["green"]], colors[["first_place"]])) +
   coord_cartesian(xlim = top_100_places_xlim, ylim = c(0, 1)) +
   base_theme
+gg_prop_time_per_place
 
 # ---- place-from-submission-interval-mod
 z_score <- function(x) (x - mean(x))/sd(x)

@@ -54,6 +54,7 @@ gg_timeline <- gg_base +
   geom_text(aes(y = SubmissionTime, label = TeamLabel, color = TeamLabel),
             data = label_data,
             vjust = 2, size = 3) +
+  scale_x_discrete("") +
   scale_y_continuous("competition time", breaks = 1:10) +
   scale_color_team_type +
   coord_flip() +
@@ -83,9 +84,9 @@ gg_regions <- ggplot(team_type_points, aes(TotalSubmissions, TotalTime)) +
         label = TeamLabel, color = TeamLabel),
     size = 3) +
   geom_hline(yintercept = median(team_type_points$TotalTime),
-             color = "gray") +
+             color = "gray", lty = 2) +
   geom_vline(xintercept = median(team_type_points$TotalSubmissions),
-             color = "gray") +
+             color = "gray", lty = 2) +
   scale_x_continuous("number of submissions", breaks = 1:10) +
   scale_y_continuous("submission interval", breaks = 1:9) +
   scale_color_team_type +
@@ -93,7 +94,7 @@ gg_regions <- ggplot(team_type_points, aes(TotalSubmissions, TotalTime)) +
   base_theme
 
 grid.arrange(gg_timeline, gg_regions,
-             gg_num_submissions, gg_total_time,
+             gg_total_time, gg_num_submissions,
              nrow = 2)
 
 # ---- team-types-density
@@ -103,16 +104,28 @@ gg_team_types_density <- ggplot(top_100, aes(TotalSubmissions, TotalTimeSec)) +
              color = "gray", lty = 2) +
   geom_vline(xintercept = median(top_100$TotalSubmissions),
              color = "gray", lty = 2) +
-  scale_color_team_type +
+  # Bug! scale_color_team_type doesn't work. Have to set colors manually.
+  scale_color_manual(values = get_colors(c("pink", "blue", "green", "orange"))) +
   base_theme
 
-gg_team_types_density +
+gg_team_types_density <- gg_team_types_density +
   scale_x_total_submissions +
   make_time_scale("submission interval (days)", seq(0, 400, by = 100)) +
   coord_cartesian(
     xlim = c(1, 300),
     ylim = ddays(c(0, 200))
   )
+gg_team_types_density
+
+# ---- quadrant-sizes
+gg_quadrant_sizes <- ggplot(top_100) +
+  aes(TeamLabel, fill = TeamLabel) +
+  geom_bar(stat = "count", alpha = default_alpha) +
+  scale_x_team_label +
+  scale_y_continuous("number of teams") +
+  scale_fill_team_type +
+  base_theme
+gg_quadrant_sizes
 
 # ---- team-types-place
 make_rev_rects <- function(frame) {
@@ -146,9 +159,10 @@ team_types_preds <- recode_team_type() %>%
   cbind(., predict(team_types_lm_mod, newdata = ., se = TRUE)) %>%
   rename(Place = fit, SE = se.fit)
 
-gg_team_types +
+gg_team_types_place <- gg_team_types +
   geom_linerange(aes(ymin = Place + SE, ymax = Place - SE),
                  data = team_types_preds)
+gg_team_types_place
 
 # ---- top-100-submissions-by-time
 ggplot(top_100_places, aes(TotalSubmissions, TotalTime)) +

@@ -10,7 +10,7 @@ output:
     toc_depth: 1
 ---
 
-Kaggle competitions are data-oriented challenges in which teams and individuals try to make accurate predictions about unlabeled data using any number of statistical and machine learning methods. Some methods work better for some problems than others, but what strategies work for all problems? This report investigates the success of **iteration as a strategy** for completing Kaggle competitions. Iteration as a strategy for problem solving is making many stepwise changes to a problem solution with the goal of incrementally improving each time. Do teams that make more submissions have a better chance of winning Kaggle competitions?
+Kaggle competitions are data-oriented challenges in which teams and individuals try to make accurate predictions about unlabeled data using a wide variety of statistical techniques and machine learning methods. Some approaches work better for some problems than others, but what strategies work for all problems? This report investigates the success of **iteration as a strategy** for completing Kaggle competitions. Iteration as a strategy for problem solving is making many stepwise changes to a problem solution with the goal of incrementally improving each time. Do teams that make more submissions have a better chance of winning Kaggle competitions?
 
 ```{r config, echo = FALSE}
 library(knitr)
@@ -49,30 +49,27 @@ read_chunk("R/team-size.R")
 
 [Kaggle competitions](https://kaggle.com) are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. For example, a standard Kaggle competition is to predict the survivors of the Titanic. Given a passenger's ticket information, how accurately can teams predict whether or not the passenger survived? This example is a bit more morbid than usual, but otherwise it's illustrative of the fact that perfect performance is rarely possible in a Kaggle competition. It's likely impossible to predict exactly who survived the Titanic based only on ticket information, but people can do far better than chance. The way teams improve their predictions is by using statistics and machine learning to generate more and more accurate predictions. Teams can use any method in statistics and machine learning to generate the predictions, which means there are many possible solutions to any Kaggle competition. The goal of this report is to determine whether iteration and team size are successful strategies to approaching Kaggle competitions regardless of what specific method is being used.
 
-```{r titanic, fig.width = 8}
+```{r titanic, fig.width = 8, fig.cap = "Survival rates for Titanic passengers. Women were more likely to survive then men, and survival rate by age varied by gender. In a Kaggle competition, these relationships and others are used to build predictive models that guess the likelihood of survival based only on a passenger's ticket information."}
 ```
 
 # Iteration
 
-```{r submissions-per-place, results = 'hide', fig.show = 'hide'}
+```{r submissions-per-place, fig.show = 'hide'}
 ```
 
-```{r relative-submissions-per-place, results = 'hide', fig.show = 'hide'}
+```{r relative-submissions-per-place, fig.show = 'hide'}
 ```
 
-```{r place-from-submissions-mod, results = 'hide', fig.show = 'hide'}
+```{r place-from-submissions-mod}
 ```
 
-```{r place-from-submissions, results = 'hide', fig.show = 'hide'}
+```{r place-from-submissions, fig.show = 'hide'}
 ```
 
-```{r predicted-place-from-submission, results = 'hide', fig.show = 'hide'}
+```{r predicted-place-from-submission, fig.show = 'hide'}
 ```
 
-```{r iteration, fig.width = 8, fig.height = 6}
-remove_titles <- theme(plot.title = element_blank())
-multiplot <- function(gg) gg + remove_titles
-
+```{r iteration, fig.width = 8, fig.height = 6, fig.cap = "Teams that make more submissions do better overall.\nTop left: top place teams make more submissions across competitions.\nTop right: Top place teams make more submissions than other teams in the same competition.\nBottom left: Making more total submissions is associated with an increase in final place.\nBottom right: Subsequent submissions made by a team improves its predicted final place."}
 grid.arrange(
   multiplot(gg_submissions_per_place),
   multiplot(gg_relative_submissions_per_place),
@@ -83,39 +80,41 @@ grid.arrange(
 
 # Submission interval
 
-```{r submission-interval-per-place}
+```{r team-types-quartet, fig.width = 6, fig.height = 5.25, fig.cap = "Four views of the same data depicting the correlation between number of submissions and submission interval for different types of teams. **Steady* and **short** teams make submissions proportional to the amount of time spent on the problem. **Long** teams make few submissions, but engage with the problem over the duration of the competition. **Rapid** teams make many submissions over a short interval. If the number of submissions matters more in determining final place than the total length of time spent on the problem, then **steady** and **rapid** teams should perform better than **short** and **long** teams."}
 ```
 
-```{r prop-time-per-place}
+<br/>
+
+```{r submission-interval-per-place, fig.show = 'hide'}
 ```
 
-# Team types
-
-```{r team-types-quartet, fig.width = 6, fig.height = 5.25}
+```{r prop-time-per-place, fig.show = 'hide'}
 ```
 
-```{r team-types-density}
+```{r submission-interval, fig.width = 6, fig.cap = "Average amount of time spent on the problem for top 100 place teams."}
+grid.arrange(
+  multiplot(gg_submission_interval_per_place),
+  multiplot(gg_prop_time_per_place),
+  nrow = 1
+)
 ```
 
-```{r team-types-place}
+<br/>
+
+```{r team-types-density, fig.show = 'hide'}
 ```
 
-```{r top-100-submissions-by-time}
+```{r quadrant-sizes, fig.show = 'hide'}
 ```
 
-# Team size
-
-```{r teamsize-from-place}
+```{r team-types-place, fig.show = 'hide'}
 ```
 
-```{r place-from-teamsize}
-```
-
-```{r place-from-teamsize-zoom}
-```
-
-```{r team-size-submissions-correlation}
-```
-
-```{r submissions-by-team-size-per-place}
+```{r team-types, fig.width = 9, fig.cap = "Distribution and performance of team types. Team types were assigned by median splitting both number of submissions and submission interval. The correlation between number of submissions and submission interval explains why there are more **short** and **steady** teams than there are **long** and **rapid** teams. When looking at how teams of each type do in the final rankings, **rapid** teams outperform the others."}
+grid.arrange(
+  multiplot(gg_team_types_density),
+  multiplot(gg_quadrant_sizes),
+  multiplot(gg_team_types_place),
+  nrow = 1
+)
 ```

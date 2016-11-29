@@ -10,6 +10,9 @@ base_theme <- theme_minimal() +
     plot.title = element_text(size = 12)
   )
 
+remove_titles <- theme(plot.title = element_blank())
+multiplot <- function(gg) gg + remove_titles
+
 # Colors
 colors <- RColorBrewer::brewer.pal(4, "Set2")
 names(colors) <- c("green", "orange", "blue", "pink")
