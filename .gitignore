@@ -1,3 +1,6 @@
+figs/
+.cache/
+*.html
 .Rproj.user
 .Rhistory
 .RData

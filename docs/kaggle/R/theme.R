@@ -13,9 +13,13 @@ base_theme <- theme_minimal() +
 # Colors
 colors <- RColorBrewer::brewer.pal(4, "Set2")
 names(colors) <- c("green", "orange", "blue", "pink")
+get_colors <- function(names) unname(colors[names])
+
 colors["first_place"] <- colors[["orange"]]
 colors["submissions"] <- colors[["blue"]]
 colors["team_size"] <- colors[["green"]]
+
+
 team_type_colors <- unname(colors[c("green", "blue", "pink", "orange")])
 
 default_alpha <- 0.6

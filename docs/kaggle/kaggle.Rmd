@@ -49,7 +49,7 @@ read_chunk("R/team-size.R")
 
 [Kaggle competitions](https://kaggle.com) are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. For example, a standard Kaggle competition is to predict the survivors of the Titanic. Given a passenger's ticket information, how accurately can teams predict whether or not the passenger survived? This example is a bit more morbid than usual, but otherwise it's illustrative of the fact that perfect performance is rarely possible in a Kaggle competition. It's likely impossible to predict exactly who survived the Titanic based only on ticket information, but people can do far better than chance. The way teams improve their predictions is by using statistics and machine learning to generate more and more accurate predictions. Teams can use any method in statistics and machine learning to generate the predictions, which means there are many possible solutions to any Kaggle competition. The goal of this report is to determine whether iteration and team size are successful strategies to approaching Kaggle competitions regardless of what specific method is being used.
 
-```{r titanic}
+```{r titanic, fig.width = 8}
 ```
 
 # Iteration
