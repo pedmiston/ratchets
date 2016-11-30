@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# Run use-data from within package directory.
-cd ratchets && Rscript data-raw/use-data.R
