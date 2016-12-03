@@ -5,7 +5,7 @@ from unipath import Path
 
 arg_docs = dict(
     loc=(
-        'locectory containing the doc. Can be a glob. '
+        'Directory containing the doc. Can be a glob. '
         'Assumed to be a subloc of "docs/".'
     ),
     name=(
