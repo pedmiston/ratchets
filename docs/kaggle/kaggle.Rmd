@@ -30,13 +30,8 @@ opts_chunk$set(
   cache.path = ".cache/"
 )
 
-read_chunk("R/setup.R")
-read_chunk("R/theme.R")
-read_chunk("R/titanic.R")
-read_chunk("R/submissions.R")
-read_chunk("R/submission-interval.R")
-read_chunk("R/team-types.R")
-read_chunk("R/team-size.R")
+library(crotchet)
+read_all_pkg_chunk_files("ratchets")
 ```
 
 ```{r setup}
