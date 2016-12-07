@@ -122,7 +122,6 @@ gg_submissions_per_time <- ggplot(top_100, aes(TotalTimeSec, TotalSubmissions)) 
   geom_point(alpha = 0.2) +
   make_time_scale("submission interval (days)", seq(0, 450, by = 50),
                   "scale_x_continuous") +
-  scale_y_total_submissions +
   scale_alpha_continuous(range = c(1, 0.2)) +
   base_theme
 

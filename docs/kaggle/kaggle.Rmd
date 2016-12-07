@@ -12,11 +12,12 @@ output:
 
 Kaggle competitions are data-oriented challenges in which teams and individuals try to make accurate predictions about unlabeled data using a wide variety of statistical techniques and machine learning methods. Some approaches work better for some problems than others, but what strategies work for all problems? This report investigates the success of **iteration as a strategy** for completing Kaggle competitions. Iteration as a strategy for problem solving is making many stepwise changes to a problem solution with the goal of incrementally improving each time. Do teams that make more submissions have a better chance of winning Kaggle competitions?
 
-```{r config, echo = FALSE}
+```{r config, echo = FALSE, message = FALSE, results = "hide"}
 library(knitr)
 library(broom)
 library(printr)
 library(grid)
+library(dplyr)
 
 opts_chunk$set(
   echo = FALSE,
@@ -30,8 +31,7 @@ opts_chunk$set(
   cache.path = ".cache/"
 )
 
-library(crotchet)
-read_all_pkg_chunk_files("ratchets")
+list.files("R", "*.R", full.names = TRUE) %>% sapply(read_chunk)
 ```
 
 ```{r setup}
@@ -42,29 +42,31 @@ read_all_pkg_chunk_files("ratchets")
 
 # What is Kaggle?
 
-[Kaggle competitions](https://kaggle.com) are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. For example, a standard Kaggle competition is to predict the survivors of the Titanic. Given a passenger's ticket information, how accurately can teams predict whether or not the passenger survived? This example is a bit more morbid than usual, but otherwise it's illustrative of the fact that perfect performance is rarely possible in a Kaggle competition. It's likely impossible to predict exactly who survived the Titanic based only on ticket information, but people can do far better than chance. The way teams improve their predictions is by using statistics and machine learning to generate more and more accurate predictions. Teams can use any method in statistics and machine learning to generate the predictions, which means there are many possible solutions to any Kaggle competition. The goal of this report is to determine whether iteration and team size are successful strategies to approaching Kaggle competitions regardless of what specific method is being used.
+[Kaggle competitions](https://kaggle.com) are data-oriented challenges in which teams and individuals use statistics and machine learning to make accurate predictions about unlabeled data. For example, a standard Kaggle competition is to predict the survivors of the Titanic. Given a passenger's ticket information, how accurately can teams predict whether or not the passenger survived? This example is a bit more morbid than usual, but otherwise it's illustrative of the fact that perfect performance is rarely possible in a Kaggle competition. It's unlikely to be able to predict exactly who survived the Titanic based only on ticket information, but people can do far better than chance. The way teams improve their predictions is by using statistics and machine learning to generate more and more accurate predictions. Teams can use any method in statistics and machine learning to generate the predictions, which means there are many possible solutions to any Kaggle competition. The goal of this report is to determine whether making more submissions is an effective strategy for completing Kaggle competitions over and above other predictors of final place.
 
 ```{r titanic, fig.width = 8, fig.cap = "Survival rates for Titanic passengers. Women were more likely to survive then men, and survival rate by age varied by gender. In a Kaggle competition, these relationships and others are used to build predictive models that guess the likelihood of survival based only on a passenger's ticket information."}
 ```
 
-# Iteration
+# Number of submissions
 
-```{r submissions-per-place, fig.show = 'hide'}
+Teams that make more submissions do better overall. Top place teams make more submissions across competitions (**top left**) and within the same competition (**top right**). Making more total submissions is associated with an increase in final place (**bottom left**). Subsequent submissions made by individual teams improved their predicted final place (**bottom right**).
+
+```{r submissions-per-place, fig.show = "hide"}
 ```
 
-```{r relative-submissions-per-place, fig.show = 'hide'}
+```{r relative-submissions-per-place, fig.show = "hide"}
 ```
 
 ```{r place-from-submissions-mod}
 ```
 
-```{r place-from-submissions, fig.show = 'hide'}
+```{r place-from-submissions, fig.show = "hide"}
 ```
 
-```{r predicted-place-from-submission, fig.show = 'hide'}
+```{r predicted-place-from-submission, fig.show = "hide"}
 ```
 
-```{r iteration, fig.width = 8, fig.height = 6, fig.cap = "Teams that make more submissions do better overall.\nTop left: top place teams make more submissions across competitions.\nTop right: Top place teams make more submissions than other teams in the same competition.\nBottom left: Making more total submissions is associated with an increase in final place.\nBottom right: Subsequent submissions made by a team improves its predicted final place."}
+```{r iteration, fig.width = 8, fig.height = 6}
 grid.arrange(
   multiplot(gg_submissions_per_place),
   multiplot(gg_relative_submissions_per_place),
@@ -75,18 +77,15 @@ grid.arrange(
 
 # Submission interval
 
-```{r team-types-quartet, fig.width = 6, fig.height = 5.25, fig.cap = "Four views of the same data depicting the correlation between number of submissions and submission interval for different types of teams. **Steady* and **short** teams make submissions proportional to the amount of time spent on the problem. **Long** teams make few submissions, but engage with the problem over the duration of the competition. **Rapid** teams make many submissions over a short interval. If the number of submissions matters more in determining final place than the total length of time spent on the problem, then **steady** and **rapid** teams should perform better than **short** and **long** teams."}
+People that make more submissions also tend to spend more time on the problem (r = `r round(cor(top_100[c("TotalSubmissions", "TotalTime")])[1, 2], 2)`). Perhaps it's the amount of time spent on the problem that is positively related with competition success, and not the number of submissions made by each team. Even though the values are positively correlated, average submission interval does not vary among top 100 place teams across competitions (**top left**). One possible explanation for this is that the measure of submission interval is inadequate, either because it varies dramatically across competitions or that the submission intervals are already at ceiling (in which case there isn't room for variation between teams). However, converting submission intervals into percentages of competition time used reveals the same results: that submission interval is relatively unrelated to final place (**top right**).
+
+```{r submission-interval-per-place, fig.show = "hide"}
 ```
 
-<br/>
-
-```{r submission-interval-per-place, fig.show = 'hide'}
+```{r prop-time-per-place, fig.show = "hide"}
 ```
 
-```{r prop-time-per-place, fig.show = 'hide'}
-```
-
-```{r submission-interval, fig.width = 6, fig.cap = "Average amount of time spent on the problem for top 100 place teams."}
+```{r submission-interval, fig.width = 6}
 grid.arrange(
   multiplot(gg_submission_interval_per_place),
   multiplot(gg_prop_time_per_place),
@@ -94,15 +93,44 @@ grid.arrange(
 )
 ```
 
-<br/>
+# Correlation
 
-```{r team-types-density, fig.show = 'hide'}
+Given the positive correlation between submissions and total time, it's worth exploring the correlation between these two values in more detail. Both distributions are very positively skewed (actually, poisson distributions?). Although the majority of teams fall close to the origin, making only a few submissions, there is a full range of team types in the Kaggle data.
+
+```{r correlation}
 ```
 
-```{r quadrant-sizes, fig.show = 'hide'}
+A different way to summarize this data is by place. Here the average number of submissions and total time for the teams in each of the top 100 places are plotted. This view of the data reveals that among top place teams, what separates them is not how much time the spend on the problem but by how many submissions they have made.
+
+```{r correlation-by-place}
 ```
 
-```{r team-types-place, fig.show = 'hide'}
+The results of a simple linear model fit to these data reveals that making more submissions is associated with an improvement in place (a decrease in place number), while spending more time on the problem is actually associated with increasing place number, and a worse place overall. This descrepancy in the valence on the predictors suggests that there might be some collinearity going on.
+
+```{r interaction-mod, echo = 1}
+```
+
+```{r interaction-mod-results}
+tidy(interaction_mod, effects = "fixed") %>%
+  kable()
+```
+
+# Team types
+
+Rather than thinking about submissions and submission intervals as continuous dimensions we can use median splits to divide the teams into four different types based on where they fall on these dimensions. Below are four views of the same data depicting the relationship between number of submissions and submission interval in four quadrants where each quadrant is a type of team. **Steady* and **short** teams make submissions proportional to the amount of time spent on the problem. **Long** teams make few submissions, but engage with the problem over the duration of the competition. **Rapid** teams make many submissions over a short interval. If the number of submissions matters more in determining final place than the total length of time spent on the problem, then **steady** and **rapid** teams should perform better than **short** and **long** teams.
+
+```{r team-types-quartet, fig.width = 6, fig.height = 5.25}
+```
+
+When dividing the actual data into team types based on median splits, the positive skew in the distributions and the positive correlation between the two variables both become apparent (**left**. Although the first quandrant (steady teams) and the third quadrant (short teams) occupy very different extents of the variables, there are approximately the same number of teams in both (**middle**). Investigating the average place of teams in each quadrant revealed that the rapid teams were the most successful in completing the Kaggle competitions (**right**). That is, the teams that spent less time on the problem than half of the other teams, and made more submissions than half of the other teams, placed better overall than teams that spent more time on the problem and made more submissions to the problem.
+
+```{r team-types-density, fig.show = "hide"}
+```
+
+```{r quadrant-sizes, fig.show = "hide"}
+```
+
+```{r team-types-place, fig.show = "hide"}
 ```
 
 ```{r team-types, fig.width = 9, fig.cap = "Distribution and performance of team types. Team types were assigned by median splitting both number of submissions and submission interval. The correlation between number of submissions and submission interval explains why there are more **short** and **steady** teams than there are **long** and **rapid** teams. When looking at how teams of each type do in the final rankings, **rapid** teams outperform the others."}
