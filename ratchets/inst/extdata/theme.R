@@ -41,7 +41,7 @@ scale_x_submission_number <- scale_x_continuous(
 scale_y_submissions <- scale_y_continuous(
   "total submissions", breaks = c(1, seq(5, 100, by = 5)))
 
-scale_y_total_time <- evoteams::make_time_scale("submission interval (days)",
+scale_y_total_time <- ratchets::make_time_scale("submission interval (days)",
                                                 seq(0, 200, by = 20))
 
 # Limits
