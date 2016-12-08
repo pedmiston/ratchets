@@ -13,6 +13,8 @@ library(AICcmodavg)
 
 library(ratchets)
 
+z_score <- function(x) (x - mean(x, na.rm = TRUE))/sd(x, na.rm = TRUE)
+
 kaggle_db <- connect_kaggle()
 submissions <- get_submissions(kaggle_db)
 leaderboards <- make_leaderboards(kaggle_db, submissions)
@@ -20,7 +22,12 @@ leaderboards <- make_leaderboards(kaggle_db, submissions)
 # Investigate top 100 places only
 top_100 <- leaderboards %>%
   filter(Place <= 100) %>%
-  divide_into_team_types()
+  divide_into_team_types() %>%
+  mutate(
+    # Rescale vars for modeling
+    TotalTimeZ = z_score(TotalTimeSec),
+    TotalSubmissionsZ = z_score(TotalSubmissions)
+  )
 
 # Summarize team properties in each place.
 top_100_places <- summarize_by_place(top_100)
