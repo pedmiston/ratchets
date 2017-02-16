@@ -6,21 +6,20 @@ from unipath import Path
 arg_docs = dict(
     loc=(
         'Directory containing the doc. Can be a glob. '
-        'Assumed to be a subloc of "docs/".'
+        'Assumed to be a subdirectory of "docs/".'
     ),
     name=(
         'Doc names to match. Defaults to *.Rmd. Searched '
         'inside of `loc`.'
     ),
     ext=(
-        'The extension of the output document. Defaults to html. '
-        'This can be overwritten in Rmd file meta data. '
+        'The extension of the output document. Defaults to "html". '
+        'This can also be set in the Rmd front matter. '
         'Determines which file gets opened.'
     ),
     dry_run='Print matching docs without compiling them.',
     reset='Clear cache and figs loc before compiling.',
     open_after='Open the doc after compiling it.',
-
 )
 
 

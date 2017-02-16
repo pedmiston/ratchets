@@ -97,13 +97,22 @@ grid.arrange(
 
 Given the positive correlation between submissions and total time, it's worth exploring the correlation between these two values in more detail. Both distributions are very positively skewed (actually, poisson distributions?). Although the majority of teams fall close to the origin, making only a few submissions, there is a full range of team types in the Kaggle data.
 
-```{r correlation}
+```{r correlation-raw, fig.show = "hide"}
 ```
+
+```{r correlation-by-place, fig.show = "hide"}
+```
+
+```{r correlation, fig.width = 6}
+grid.arrange(
+  multiplot(gg_correlation_raw),
+  multiplot(gg_correlation_by_place),
+  nrow = 1
+)
+```
+
 
 A different way to summarize this data is by place. Here the average number of submissions and total time for the teams in each of the top 100 places are plotted. This view of the data reveals that among top place teams, what separates them is not how much time the spend on the problem but by how many submissions they have made.
-
-```{r correlation-by-place}
-```
 
 The results of a simple linear model fit to these data reveals that making more submissions is associated with an improvement in place (a decrease in place number), while spending more time on the problem is actually associated with increasing place number, and a worse place overall. This descrepancy in the valence on the predictors suggests that there might be some collinearity going on.
 
@@ -117,7 +126,7 @@ tidy(interaction_mod, effects = "fixed") %>%
 
 # Team types
 
-Rather than thinking about submissions and submission intervals as continuous dimensions we can use median splits to divide the teams into four different types based on where they fall on these dimensions. Below are four views of the same data depicting the relationship between number of submissions and submission interval in four quadrants where each quadrant is a type of team. **Steady* and **short** teams make submissions proportional to the amount of time spent on the problem. **Long** teams make few submissions, but engage with the problem over the duration of the competition. **Rapid** teams make many submissions over a short interval. If the number of submissions matters more in determining final place than the total length of time spent on the problem, then **steady** and **rapid** teams should perform better than **short** and **long** teams.
+Rather than thinking about submissions and submission intervals as continuous dimensions we can use median splits to divide the teams into four different types based on where they fall on these dimensions. Below are four views of the same data depicting the relationship between number of submissions and submission interval in four quadrants where each quadrant is a type of team. **Steady** and **short** teams make submissions proportional to the amount of time spent on the problem. **Long** teams make few submissions, but engage with the problem over the duration of the competition. **Rapid** teams make many submissions over a short interval. If the number of submissions matters more in determining final place than the total length of time spent on the problem, then **steady** and **rapid** teams should perform better than **short** and **long** teams.
 
 ```{r team-types-quartet, fig.width = 6, fig.height = 5.25}
 ```
