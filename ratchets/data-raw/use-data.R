@@ -1,4 +1,5 @@
 library(devtools)
+library(dplyr)
 library(readr)
 
 read_titanic <- . %>% file.path("data-raw/titanic", .) %>% read_csv()

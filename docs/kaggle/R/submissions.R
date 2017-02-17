@@ -2,8 +2,26 @@ source("docs/kaggle/R/setup.R")
 source("docs/kaggle/R/theme.R")
 
 # ---- submissions-per-place
-gg_submissions_per_place <- ggplot(top_100_places, aes(Place, TotalSubmissions)) +
-  geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
+top_100 %<>%
+  mutate(PlaceScaled = scale(Place),
+         PlaceScaledSqr = PlaceScaled^2)
+
+submissions_per_place_mod <- lmer(TotalSubmissions ~ PlaceScaled + PlaceScaledSqr +
+                                    (PlaceScaled + PlaceScaledSqr|CompetitionId),
+                                  data = top_100)
+
+submissions_per_place_preds <- unique(top_100[, c("Place", "PlaceScaled")]) %>%
+  mutate(PlaceScaledSqr = PlaceScaled^2) %>%
+  cbind(predictSE(submissions_per_place_mod, newdata = .)) %>%
+  rename(TotalSubmissions = fit, TotalSubmissionsSE = se.fit) %>%
+  label_place_groups()
+
+gg_submissions_per_place <- ggplot(top_100_places) +
+  aes(Place, TotalSubmissions, color = FirstPlaceTeam) +
+  # geom_linerange(aes(ymin = TotalSubmissions - TotalSubmissionsSE,
+  #                    ymax = TotalSubmissions + TotalSubmissionsSE),
+  #                data = submissions_per_place_preds) +
+  geom_point(alpha = default_alpha) +
   scale_x_place +
   scale_y_submissions +
   scale_color_manual(values = c(colors[["submissions"]], colors[["first_place"]])) +
