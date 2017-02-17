@@ -9,4 +9,3 @@ label_place_groups(frame)
 \description{
 Label different place groups, i.e., FirstPlaceTeam.
 }
-

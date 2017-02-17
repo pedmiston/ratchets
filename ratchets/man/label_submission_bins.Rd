@@ -9,4 +9,3 @@ label_submission_bins(leaderboards, submission_bin_width = 10)
 \description{
 Cut total submissions into bins and label with the middle value.
 }
-

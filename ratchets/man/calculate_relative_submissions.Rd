@@ -10,4 +10,3 @@ calculate_relative_submissions(leaderboards)
 Requires first place team to be labeled (FirstPlaceTeam columnn).
 See \code{\link{label_place_groups}}.
 }
-

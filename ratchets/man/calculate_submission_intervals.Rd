@@ -9,4 +9,3 @@ calculate_submission_intervals(submissions)
 \description{
 Compute time interval between first and last submissions.
 }
-

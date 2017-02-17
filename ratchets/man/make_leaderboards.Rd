@@ -45,4 +45,3 @@ kaggle_db <- connect_kaggle()
 leaderboards <- make_leaderboards(kaggle_db)
 
 }
-

@@ -10,7 +10,7 @@ output:
     toc_depth: 1
 ---
 
-Kaggle competitions are data-oriented challenges in which teams and individuals try to make accurate predictions about unlabeled data using a wide variety of statistical techniques and machine learning methods. Some approaches work better for some problems than others, but what strategies work for all problems? This report investigates the success of **iteration as a strategy** for completing Kaggle competitions. Iteration as a strategy for problem solving is making many stepwise changes to a problem solution with the goal of incrementally improving each time. Do teams that make more submissions have a better chance of winning Kaggle competitions?
+Kaggle competitions are data-oriented challenges in which teams and individuals try to make accurate predictions about unlabeled data using a wide variety of statistical techniques and machine learning methods. Some approaches work better for some problems than others, but what strategies work for all problems? This report investigates the success of **iteration as a strategy** for completing Kaggle competitions. Iteration as a strategy for problem solving is making incremental changes to a problem solution with the goal of improving performance each time. Do teams that make more submissions have a better chance of winning Kaggle competitions?
 
 ```{r config, echo = FALSE, message = FALSE, results = "hide"}
 library(knitr)
@@ -148,5 +148,14 @@ grid.arrange(
   multiplot(gg_quadrant_sizes),
   multiplot(gg_team_types_place),
   nrow = 1
+)
+```
+
+```{r team-types-quad, fig.width = 8, fig.height = 6}
+grid.arrange(
+  multiplot(gg_regions),
+  multiplot(gg_team_types_density),
+  multiplot(gg_quadrant_sizes),
+  multiplot(gg_team_types_place)
 )
 ```

@@ -9,4 +9,3 @@ cut_and_label_bin_means(values, breaks)
 \description{
 Cut values into bins based on breaks and label with numeric bin means.
 }
-

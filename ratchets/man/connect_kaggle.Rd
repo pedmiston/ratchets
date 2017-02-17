@@ -20,4 +20,3 @@ kaggle_db <- connect_kaggle("path/to/kaggle.sqlite")
 kaggle_db <- connect_kaggle()  # assumes db included in ratchets pkg
 
 }
-

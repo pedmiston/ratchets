@@ -9,4 +9,3 @@ predict_place(submissions, leaderboards)
 \description{
 Label predicted place.
 }
-

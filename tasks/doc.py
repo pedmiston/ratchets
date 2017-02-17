@@ -25,7 +25,7 @@ arg_docs = dict(
 
 @task(help=arg_docs)
 def render(ctx, loc='', name='*.Rmd', dry_run=False, reset=False,
-           open_after=False, ext='.html', verbose=False):
+           open_after=False, verbose=False):
     """Render Rmarkdown documents."""
     docs = find_docs(name, loc)
 
@@ -36,12 +36,12 @@ def render(ctx, loc='', name='*.Rmd', dry_run=False, reset=False,
     if reset:
         clear(ctx, loc=loc, name=name, verbose=verbose)
 
-    cmd = 'Rscript -e "rmarkdown::render(\'{doc}\', output_file=\'{out}\')"'
+    cmd = 'Rscript -e "rmarkdown::render(\'{doc}\')"'
     for doc in docs:
-        out = Path(doc.parent, doc.stem + ext)
-        ctx.run(cmd.format(doc=doc, out=out), echo=verbose)
+        ctx.run(cmd.format(doc=doc), echo=verbose)
 
         if open_after:
+            out = Path(doc.parent, doc.stem + '.html')
             ctx.run('open {}'.format(out), echo=verbose)
 
 

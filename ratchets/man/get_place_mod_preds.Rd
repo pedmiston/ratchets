@@ -9,4 +9,3 @@ get_place_mod_preds(mod, predict_fn, x_preds)
 \description{
 Get model predictions for a model predicting Place from TotalSubmissions.
 }
-

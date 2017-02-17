@@ -15,4 +15,3 @@ TeamSize for all teams that finished in this place.
 leaderboards \%>\% filter(Place <= 100) \%>\% summarize_by_place()
 
 }
-

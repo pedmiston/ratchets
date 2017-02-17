@@ -13,4 +13,3 @@ to one day.}
 \description{
 Cut submission intervals into bins and label with the middle time value.
 }
-

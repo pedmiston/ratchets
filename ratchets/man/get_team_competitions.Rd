@@ -9,4 +9,3 @@ get_team_competitions(kaggle_db)
 \description{
 Create a map of team ids to competition ids.
 }
-

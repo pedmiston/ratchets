@@ -9,4 +9,3 @@ make_time_scale(name, breaks_days, scale_obj = "scale_y_continuous", ...)
 \description{
 Create a ggplot2 scale object for time variable in seconds.
 }
-

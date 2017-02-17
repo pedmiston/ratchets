@@ -18,4 +18,3 @@ standings.}
 \description{
 Simplifies the Submissions table of the Kaggle db.
 }
-

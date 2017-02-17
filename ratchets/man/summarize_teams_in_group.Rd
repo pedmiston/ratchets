@@ -13,4 +13,3 @@ This functional sequence is meant to be passed a grouped data frame.
 leaderboards \%>\% group_by(TeamSize) \%>\% summarize_teams_in_group()
 
 }
-

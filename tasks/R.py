@@ -2,15 +2,15 @@ from invoke import task
 
 
 @task
-def install(ctx):
+def install(ctx, verbose=False):
     """Install the ratchets R package."""
     R_commands = """
     library(devtools)
-    pkg <- "ratchets"
+    pkg <- 'ratchets'
     document(pkg)
     install(pkg)
-    """.split()
-    ctx.run('Rscript -e "{}"'.format(';'.join(R_commands)))
+    """.strip().split('\n')
+    ctx.run('Rscript -e "{}"'.format(';'.join(R_commands)), echo=verbose)
 
 
 @task

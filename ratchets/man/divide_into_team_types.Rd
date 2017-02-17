@@ -9,4 +9,3 @@ divide_into_team_types(leaderboards)
 \description{
 See also \code{\link{recode_team_type}}.
 }
-

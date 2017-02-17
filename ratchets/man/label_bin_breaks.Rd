@@ -9,4 +9,3 @@ label_bin_breaks(breaks)
 \description{
 Calculate the mean between bin min and bin max.
 }
-

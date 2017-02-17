@@ -9,4 +9,3 @@ get_competition_intervals(kaggle_db)
 \description{
 Get competition start and end times.
 }
-

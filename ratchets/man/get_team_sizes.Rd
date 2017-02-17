@@ -9,4 +9,3 @@ get_team_sizes(kaggle_db)
 \description{
 Calculate Kaggle team sizes.
 }
-

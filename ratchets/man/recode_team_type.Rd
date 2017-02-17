@@ -9,4 +9,3 @@ recode_team_type(frame)
 \description{
 If no data is provided, the team type map is returned.
 }
-

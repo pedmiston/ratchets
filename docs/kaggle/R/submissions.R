@@ -3,25 +3,25 @@ source("docs/kaggle/R/theme.R")
 
 # ---- submissions-per-place
 top_100 %<>%
-  mutate(PlaceScaled = scale(Place),
+  mutate(PlaceScaled = as.numeric(scale(Place)),
          PlaceScaledSqr = PlaceScaled^2)
 
-submissions_per_place_mod <- lmer(TotalSubmissions ~ PlaceScaled + PlaceScaledSqr +
-                                    (PlaceScaled + PlaceScaledSqr|CompetitionId),
-                                  data = top_100)
+submissions_per_place_mod <- lm(TotalSubmissions ~ PlaceScaled + PlaceScaledSqr,
+                                data = top_100)
 
 submissions_per_place_preds <- unique(top_100[, c("Place", "PlaceScaled")]) %>%
   mutate(PlaceScaledSqr = PlaceScaled^2) %>%
-  cbind(predictSE(submissions_per_place_mod, newdata = .)) %>%
+  cbind(predict(submissions_per_place_mod, newdata = ., se = TRUE)) %>%
   rename(TotalSubmissions = fit, TotalSubmissionsSE = se.fit) %>%
   label_place_groups()
 
 gg_submissions_per_place <- ggplot(top_100_places) +
-  aes(Place, TotalSubmissions, color = FirstPlaceTeam) +
-  # geom_linerange(aes(ymin = TotalSubmissions - TotalSubmissionsSE,
-  #                    ymax = TotalSubmissions + TotalSubmissionsSE),
-  #                data = submissions_per_place_preds) +
-  geom_point(alpha = default_alpha) +
+  aes(Place, TotalSubmissions) +
+  geom_ribbon(aes(ymin = TotalSubmissions - TotalSubmissionsSE,
+                  ymax = TotalSubmissions + TotalSubmissionsSE),
+              fill = "gray", alpha = 0.4,
+              data = submissions_per_place_preds) +
+  geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha) +
   scale_x_place +
   scale_y_submissions +
   scale_color_manual(values = c(colors[["submissions"]], colors[["first_place"]])) +
@@ -31,7 +31,23 @@ gg_submissions_per_place <- ggplot(top_100_places) +
 gg_submissions_per_place
 
 # ---- relative-submissions-per-place
-gg_relative_submissions_per_place <- ggplot(top_100_places, aes(Place, SubmissionsToFirstPlace)) +
+relative_submissions_per_place_mod <- lm(
+  SubmissionsToFirstPlace ~ PlaceScaled + PlaceScaledSqr,
+  data = top_100
+)
+
+relative_submissions_per_place_preds <- unique(top_100[, c("Place", "PlaceScaled")]) %>%
+  mutate(PlaceScaledSqr = PlaceScaled^2) %>%
+  cbind(predict(relative_submissions_per_place_mod, newdata = ., se = TRUE)) %>%
+  rename(SubmissionsToFirstPlace = fit, SubmissionsToFirstPlaceSE = se.fit) %>%
+  label_place_groups()
+
+gg_relative_submissions_per_place <- ggplot(top_100_places) +
+  aes(Place, SubmissionsToFirstPlace) +
+  geom_ribbon(aes(ymin = SubmissionsToFirstPlace - SubmissionsToFirstPlaceSE,
+                  ymax = SubmissionsToFirstPlace + SubmissionsToFirstPlaceSE),
+              fill = "gray", alpha = 0.4,
+              data = relative_submissions_per_place_preds) +
   geom_point(aes(color = FirstPlaceTeam), alpha = default_alpha,
              stat = "summary", fun.y = "mean") +
   scale_x_place +
